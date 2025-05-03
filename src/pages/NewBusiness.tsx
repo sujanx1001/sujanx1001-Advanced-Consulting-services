@@ -62,15 +62,24 @@ export default function NewBusiness() {
       // If website is empty string, set to undefined
       const websiteValue = values.website === '' ? undefined : values.website;
       
+      // Make sure we pass all required fields with correct types
       await createBusinessPromotion({
-        ...values,
+        businessName: values.businessName,
+        description: values.description,
+        logo: values.logo,
+        location: values.location,
         website: websiteValue,
         owner: {
           id: user!.id,
           name: user!.name,
         },
       });
+      
       navigate('/dashboard');
+      toast({
+        title: "Success!",
+        description: "Your business has been submitted for approval.",
+      });
     } catch (error) {
       console.error('Failed to create business promotion:', error);
       toast({
@@ -87,12 +96,15 @@ export default function NewBusiness() {
 
   return (
     <div className="page-container max-w-3xl">
-      <h1 className="text-3xl font-bold mb-2">List Your Social Impact Business</h1>
-      <p className="text-muted-foreground mb-6">
-        Fill in the details below to create a new business promotion. Your submission will be reviewed by an administrator.
-      </p>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2 text-gradient">List Your Social Impact Business</h1>
+        <div className="h-1 w-24 bg-cause mx-auto mb-6"></div>
+        <p className="text-muted-foreground">
+          Fill in the details below to create a new business promotion. Your submission will be reviewed by an administrator.
+        </p>
+      </div>
       
-      <div className="bg-card p-6 rounded-lg border">
+      <div className="bg-card p-6 rounded-lg border shadow-md bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField

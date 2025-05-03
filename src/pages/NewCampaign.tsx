@@ -69,8 +69,29 @@ export default function NewCampaign() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await createCampaign(values);
+      // Create the campaign with all required fields
+      await createCampaign({
+        title: values.title,
+        shortDescription: values.shortDescription,
+        description: values.description,
+        category: values.category,
+        goal: values.goal,
+        image: values.image,
+        location: values.location,
+        // Add the required fields that were missing
+        raised: 0,
+        creator: {
+          id: user!.id,
+          name: user!.name,
+          avatar: user!.avatar
+        },
+      });
+      
       navigate('/dashboard');
+      toast({
+        title: "Success!",
+        description: "Your campaign has been submitted for approval.",
+      });
     } catch (error) {
       console.error('Failed to create campaign:', error);
       toast({
@@ -87,12 +108,15 @@ export default function NewCampaign() {
 
   return (
     <div className="page-container max-w-3xl">
-      <h1 className="text-3xl font-bold mb-2">Create New Campaign</h1>
-      <p className="text-muted-foreground mb-6">
-        Fill in the details below to create a new campaign. Your submission will be reviewed by an administrator.
-      </p>
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2 text-gradient">Create New Campaign</h1>
+        <div className="h-1 w-24 bg-cause mx-auto mb-6"></div>
+        <p className="text-muted-foreground">
+          Fill in the details below to create a new campaign. Your submission will be reviewed by an administrator.
+        </p>
+      </div>
       
-      <div className="bg-card p-6 rounded-lg border">
+      <div className="bg-card p-6 rounded-lg border shadow-md bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
