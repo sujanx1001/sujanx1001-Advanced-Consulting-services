@@ -120,7 +120,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
   {
     id: '4',
     title: 'Homeless Shelter Support',
-    description: 'Help us provide shelter, food, and resources for homeless individuals in our community. Winter is particularly challenging, and your support can make a huge difference in someone's life. We aim to offer not just temporary relief but pathways to stable housing and employment.',
+    description: "Help us provide shelter, food, and resources for homeless individuals in our community. Winter is particularly challenging, and your support can make a huge difference in someone's life. We aim to offer not just temporary relief but pathways to stable housing and employment.",
     shortDescription: 'Providing shelter and resources for homeless individuals',
     goal: 12000,
     raised: 2800,
