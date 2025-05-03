@@ -11,13 +11,13 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation();
   
-  // Check if current path is login or register, these pages have a simplified layout
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  // Check if current path is login, register, or forgot-password
+  const isAuthPage = ['/login', '/register', '/forgot-password'].includes(location.pathname);
   
   return (
     <div className="flex flex-col min-h-screen">
       {!isAuthPage && <Navbar />}
-      <main className="flex-grow">
+      <main className={`flex-grow ${isAuthPage ? 'bg-gradient-to-b from-background to-muted/30' : ''}`}>
         {children}
       </main>
       {!isAuthPage && <Footer />}

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -29,6 +31,7 @@ const formSchema = z.object({
 export default function Register() {
   const navigate = useNavigate();
   const { register, isLoading } = useAuth();
+  const [registerError, setRegisterError] = useState<string | null>(null);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,11 +44,16 @@ export default function Register() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setRegisterError(null);
     try {
       await register(values.name, values.email, values.password);
       navigate('/dashboard');
     } catch (error) {
-      // Error is handled in the auth context and displayed via toast
+      if (error instanceof Error) {
+        setRegisterError(error.message);
+      } else {
+        setRegisterError('Registration failed. Please try again.');
+      }
       console.error('Registration failed:', error);
     }
   }
@@ -63,6 +71,13 @@ export default function Register() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {registerError && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{registerError}</AlertDescription>
+            </Alert>
+          )}
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField

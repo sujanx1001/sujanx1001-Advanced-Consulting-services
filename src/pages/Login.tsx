@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -15,6 +15,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -24,6 +26,7 @@ const formSchema = z.object({
 export default function Login() {
   const navigate = useNavigate();
   const { login, isLoading } = useAuth();
+  const [loginError, setLoginError] = useState<string | null>(null);
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,11 +37,13 @@ export default function Login() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoginError(null);
     try {
       await login(values.email, values.password);
       navigate('/dashboard');
     } catch (error) {
-      // Error is handled in the auth context and displayed via toast
+      // Display the error in the UI
+      setLoginError('Invalid email or password. Please try again.');
       console.error('Login failed:', error);
     }
   }
@@ -56,6 +61,13 @@ export default function Login() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-card py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {loginError && (
+            <Alert variant="destructive" className="mb-6">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{loginError}</AlertDescription>
+            </Alert>
+          )}
+          
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -88,7 +100,8 @@ export default function Login() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Button variant="link" className="text-sm p-0 h-auto">
+                  <Button variant="link" className="text-sm p-0 h-auto" type="button" 
+                    onClick={() => navigate('/forgot-password')}>
                     Forgot your password?
                   </Button>
                 </div>
