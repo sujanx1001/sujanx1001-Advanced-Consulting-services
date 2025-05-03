@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 export default function About() {
   const navigate = useNavigate();
@@ -101,18 +102,27 @@ export default function About() {
         <h2 className="text-2xl font-semibold mb-6 text-center">Our Team</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
-            <div className="w-32 h-32 rounded-full bg-muted mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold">Jane Rodriguez</h3>
+            <Avatar className="w-32 h-32 mx-auto mb-4">
+              <AvatarImage src="/placeholder.svg" alt="Netra" />
+              <AvatarFallback className="text-2xl">N</AvatarFallback>
+            </Avatar>
+            <h3 className="text-xl font-semibold">Netra</h3>
             <p className="text-muted-foreground">Founder & CEO</p>
           </div>
           <div className="text-center">
-            <div className="w-32 h-32 rounded-full bg-muted mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold">Michael Chang</h3>
+            <Avatar className="w-32 h-32 mx-auto mb-4">
+              <AvatarImage src="/placeholder.svg" alt="Sujan" />
+              <AvatarFallback className="text-2xl">S</AvatarFallback>
+            </Avatar>
+            <h3 className="text-xl font-semibold">Sujan</h3>
             <p className="text-muted-foreground">Chief Impact Officer</p>
           </div>
           <div className="text-center">
-            <div className="w-32 h-32 rounded-full bg-muted mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold">Sarah Johnson</h3>
+            <Avatar className="w-32 h-32 mx-auto mb-4">
+              <AvatarImage src="/placeholder.svg" alt="Nabin" />
+              <AvatarFallback className="text-2xl">N</AvatarFallback>
+            </Avatar>
+            <h3 className="text-xl font-semibold">Nabin</h3>
             <p className="text-muted-foreground">Community Director</p>
           </div>
         </div>
