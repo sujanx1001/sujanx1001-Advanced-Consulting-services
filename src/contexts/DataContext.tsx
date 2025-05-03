@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Campaign, BusinessPromotion, Category, Donation } from '@/types';
 import { useToast } from '@/components/ui/use-toast';
@@ -67,7 +68,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
     goal: 15000,
     raised: 8500,
     category: 'Environment',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&q=80',
     location: 'Sydney, NSW',
     creator: {
       id: '2',
@@ -87,7 +88,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
     goal: 25000,
     raised: 12200,
     category: 'Education',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80',
     location: 'Melbourne, VIC',
     creator: {
       id: '2',
@@ -107,7 +108,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
     goal: 18000,
     raised: 7100,
     category: 'Health',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80',
     location: 'Brisbane, QLD',
     creator: {
       id: '1',
@@ -127,7 +128,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
     goal: 22000,
     raised: 5800,
     category: 'Poverty',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1517486430290-35657bdcef51?auto=format&fit=crop&q=80',
     location: 'Perth, WA',
     creator: {
       id: '2',
@@ -147,7 +148,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
     goal: 30000,
     raised: 9200,
     category: 'Animals',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1518877593221-1f28583780b4?auto=format&fit=crop&q=80',
     location: 'Adelaide, SA',
     creator: {
       id: '2',
@@ -167,7 +168,7 @@ const MOCK_CAMPAIGNS: Campaign[] = [
     goal: 20000,
     raised: 4500,
     category: 'Poverty',
-    image: '/placeholder.svg',
+    image: 'https://images.unsplash.com/photo-1575218823251-f9d243b6f720?auto=format&fit=crop&q=80',
     location: 'Hobart, TAS',
     creator: {
       id: '1',
@@ -186,7 +187,7 @@ const MOCK_BUSINESS_PROMOTIONS: BusinessPromotion[] = [
     id: '1',
     businessName: 'EcoFriendly Products Australia',
     description: 'Based in Sydney, we create sustainable household products that reduce plastic waste and environmental impact across Australia. Our mission is to make eco-friendly living accessible and affordable for everyone from Bondi to Bronte and beyond.',
-    logo: '/placeholder.svg',
+    logo: 'https://images.unsplash.com/photo-1560878801-67de6ca1a64e?auto=format&fit=crop&q=80&w=400&h=400',
     website: 'https://example.com/ecofriendly',
     location: 'Sydney, NSW',
     owner: {
@@ -200,7 +201,7 @@ const MOCK_BUSINESS_PROMOTIONS: BusinessPromotion[] = [
     id: '2',
     businessName: 'Melbourne Community Bookstore',
     description: 'A local independent bookstore in Fitzroy that hosts literacy programs for children and supports Victorian authors. We believe in the power of stories to connect communities and inspire change throughout Melbourne and beyond.',
-    logo: '/placeholder.svg',
+    logo: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&q=80&w=400&h=400',
     website: 'https://example.com/communitybookstore',
     location: 'Melbourne, VIC',
     owner: {
@@ -214,7 +215,7 @@ const MOCK_BUSINESS_PROMOTIONS: BusinessPromotion[] = [
     id: '3',
     businessName: 'Brisbane Fair Trade Coffee',
     description: "Based in Brisbane's West End, we source ethically produced coffee directly from farmers, ensuring fair wages and sustainable farming practices. Every cup you enjoy in our café supports a global network of responsible agriculture while creating local jobs in Queensland.",
-    logo: '/placeholder.svg',
+    logo: 'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?auto=format&fit=crop&q=80&w=400&h=400',
     location: 'Brisbane, QLD',
     owner: {
       id: '1',
@@ -227,7 +228,7 @@ const MOCK_BUSINESS_PROMOTIONS: BusinessPromotion[] = [
     id: '4',
     businessName: 'Perth Sustainable Fashion',
     description: 'Our Perth-based fashion brand creates stylish, ethically produced clothing using sustainable materials. We work with local Western Australian designers and artisans to create timeless pieces that reduce fashion waste while supporting fair labor practices.',
-    logo: '/placeholder.svg',
+    logo: 'https://images.unsplash.com/photo-1507680434567-5739c80be1ac?auto=format&fit=crop&q=80&w=400&h=400',
     website: 'https://example.com/sustainablefashion',
     location: 'Perth, WA',
     owner: {
@@ -241,7 +242,7 @@ const MOCK_BUSINESS_PROMOTIONS: BusinessPromotion[] = [
     id: '5',
     businessName: 'Adelaide Organic Market',
     description: 'Supporting South Australian farmers and producers, our Adelaide market brings organic, locally grown food to urban communities. We eliminate food miles and packaging waste while ensuring fair prices for both consumers and the farmers who grow our food.',
-    logo: '/placeholder.svg',
+    logo: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&q=80&w=400&h=400',
     location: 'Adelaide, SA',
     owner: {
       id: '1',

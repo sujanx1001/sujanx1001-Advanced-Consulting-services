@@ -20,6 +20,9 @@ import NewBusiness from "./pages/NewBusiness";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import ErrorPage from "./pages/ErrorPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiePolicy from "./pages/CookiePolicy";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +47,9 @@ const App = () => (
                 <Route path="/dashboard/new-campaign" element={<NewCampaign />} />
                 <Route path="/dashboard/new-business" element={<NewBusiness />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/error" element={<ErrorPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
