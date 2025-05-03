@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { Campaign, BusinessPromotion, Category, Donation } from '@/types';
 import { useToast } from '@/components/ui/use-toast';
@@ -214,7 +213,7 @@ const MOCK_BUSINESS_PROMOTIONS: BusinessPromotion[] = [
   {
     id: '3',
     businessName: 'Brisbane Fair Trade Coffee',
-    description: 'Based in Brisbane's West End, we source ethically produced coffee directly from farmers, ensuring fair wages and sustainable farming practices. Every cup you enjoy in our café supports a global network of responsible agriculture while creating local jobs in Queensland.',
+    description: "Based in Brisbane's West End, we source ethically produced coffee directly from farmers, ensuring fair wages and sustainable farming practices. Every cup you enjoy in our café supports a global network of responsible agriculture while creating local jobs in Queensland.",
     logo: '/placeholder.svg',
     location: 'Brisbane, QLD',
     owner: {
