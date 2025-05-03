@@ -1,62 +1,73 @@
-
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BusinessCard } from '@/components/ui/business-card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useData } from '@/contexts/DataContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { BusinessPromotion } from '@/types';
-import { Search, X } from 'lucide-react';
+import { Search, X, PlusCircle } from 'lucide-react';
 
 export default function Businesses() {
   const { businessPromotions, isLoading } = useData();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
   const [filteredBusinesses, setFilteredBusinesses] = useState<BusinessPromotion[]>([]);
   
-  // Filter businesses to show only approved ones
-  const approvedBusinesses = businessPromotions.filter(business => business.status === 'approved');
+  // Filter businesses based on user role
+  const visibleBusinesses = businessPromotions.filter(business => {
+    // Admin sees all businesses
+    if (user?.role === 'admin') return true;
+    // Others only see approved businesses
+    return business.status === 'approved';
+  });
   
-  // Handle search and filtering
+  // Handle search
   useEffect(() => {
-    let result = [...approvedBusinesses];
+    let result = [...visibleBusinesses];
     
-    // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       result = result.filter(business => 
-        business.businessName.toLowerCase().includes(term) ||
-        business.description.toLowerCase().includes(term)
+        business.businessName.toLowerCase().includes(term) || 
+        business.description.toLowerCase().includes(term) ||
+        business.location.toLowerCase().includes(term)
       );
     }
     
     setFilteredBusinesses(result);
-    
-    // Update URL parameters
-    const params: { search?: string } = {};
-    if (searchTerm) params.search = searchTerm;
-    setSearchParams(params);
-  }, [searchTerm, approvedBusinesses, setSearchParams]);
-
-  // Handle search submission
+  }, [searchTerm, visibleBusinesses]);
+  
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // The effect will handle the filtering
   };
-
-  // Clear search
-  const handleClearSearch = () => {
+  
+  const clearSearch = () => {
     setSearchTerm('');
   };
 
   return (
     <div className="page-container">
       <div className="mb-12 max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4">Local Impact Businesses</h1>
+        <h1 className="text-4xl font-bold mb-4">Social Impact Businesses</h1>
         <p className="text-xl text-muted-foreground">
-          Discover and support socially conscious businesses making a positive impact in our communities.
-          These businesses align with our mission of creating sustainable social change.
+          Discover Australian businesses making a positive impact in their communities through
+          sustainable practices and social responsibility.
         </p>
+        
+        {isAuthenticated && (
+          <div className="mt-6">
+            <Button 
+              onClick={() => navigate('/dashboard/new-business')}
+              className="bg-cause hover:bg-cause-dark"
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              List Your Business
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Search Section */}
@@ -66,7 +77,7 @@ export default function Businesses() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Search businesses..."
+              placeholder="Search businesses by name, description, or location..."
               className="pl-10"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -75,18 +86,16 @@ export default function Businesses() {
           <Button type="submit">Search</Button>
         </form>
         
-        <div className="flex items-center">
-          {searchTerm && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleClearSearch}
-              className="ml-auto h-8"
-            >
-              <X className="h-4 w-4 mr-1" /> Clear search
-            </Button>
-          )}
-        </div>
+        {searchTerm && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={clearSearch}
+            className="ml-2 h-8"
+          >
+            <X className="h-4 w-4 mr-1" /> Clear search
+          </Button>
+        )}
       </div>
 
       {/* Results count */}
@@ -114,8 +123,17 @@ export default function Businesses() {
         <div className="text-center py-12">
           <h3 className="text-xl font-semibold mb-2">No businesses found</h3>
           <p className="text-muted-foreground">
-            Try adjusting your search to find what you're looking for.
+            Try adjusting your search terms or browse again later as new businesses are added.
           </p>
+          {isAuthenticated && (
+            <Button 
+              onClick={() => navigate('/dashboard/new-business')}
+              className="mt-6 bg-cause hover:bg-cause-dark"
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              List Your Business
+            </Button>
+          )}
         </div>
       )}
     </div>

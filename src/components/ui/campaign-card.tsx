@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Campaign } from '@/types';
 import { formatDistanceToNow } from 'date-fns';
-import { Heart, Share2, Users } from 'lucide-react';
+import { Heart, Share2, Users, MapPin } from 'lucide-react';
 import { useData } from '@/contexts/DataContext';
 
 interface CampaignCardProps {
@@ -50,6 +50,10 @@ export function CampaignCard({ campaign, showActions = true }: CampaignCardProps
               {campaign.title}
             </Link>
           </h3>
+        </div>
+        <div className="flex items-center text-sm text-muted-foreground mb-3">
+          <MapPin className="h-3 w-3 mr-1" />
+          {campaign.location}
         </div>
         <p className="text-muted-foreground mb-4 line-clamp-2">
           {campaign.shortDescription}

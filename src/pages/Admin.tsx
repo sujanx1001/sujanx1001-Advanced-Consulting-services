@@ -24,7 +24,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useData } from '@/contexts/DataContext';
 import { Campaign, BusinessPromotion } from '@/types';
 import { format } from 'date-fns';
-import { Check, X, Eye } from 'lucide-react';
+import { Check, X, Eye, MapPin } from 'lucide-react';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -110,6 +110,7 @@ export default function Admin() {
                   <TableHead>Title</TableHead>
                   <TableHead>Creator</TableHead>
                   <TableHead>Category</TableHead>
+                  <TableHead>Location</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -121,6 +122,7 @@ export default function Admin() {
                     <TableCell>{campaign.title}</TableCell>
                     <TableCell>{campaign.creator.name}</TableCell>
                     <TableCell>{campaign.category}</TableCell>
+                    <TableCell>{campaign.location}</TableCell>
                     <TableCell>
                       {format(new Date(campaign.createdAt), 'MMM d, yyyy')}
                     </TableCell>
@@ -165,7 +167,7 @@ export default function Admin() {
                 
                 {campaigns.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-4">
+                    <TableCell colSpan={7} className="text-center py-4">
                       No campaigns found
                     </TableCell>
                   </TableRow>
@@ -182,6 +184,7 @@ export default function Admin() {
                 <TableRow>
                   <TableHead>Business Name</TableHead>
                   <TableHead>Owner</TableHead>
+                  <TableHead>Location</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -192,6 +195,7 @@ export default function Admin() {
                   <TableRow key={business.id}>
                     <TableCell>{business.businessName}</TableCell>
                     <TableCell>{business.owner.name}</TableCell>
+                    <TableCell>{business.location}</TableCell>
                     <TableCell>
                       {format(new Date(business.createdAt), 'MMM d, yyyy')}
                     </TableCell>
@@ -236,7 +240,7 @@ export default function Admin() {
                 
                 {businessPromotions.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-4">
+                    <TableCell colSpan={6} className="text-center py-4">
                       No businesses found
                     </TableCell>
                   </TableRow>
@@ -269,6 +273,14 @@ export default function Admin() {
                 <div>
                   <h3 className="font-semibold mb-1">Category</h3>
                   <p>{selectedCampaign.category}</p>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <h3 className="font-semibold mb-1">Location</h3>
+                <div className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
+                  <p>{selectedCampaign.location}</p>
                 </div>
               </div>
               
@@ -313,6 +325,14 @@ export default function Admin() {
               <div className="mb-4">
                 <h3 className="font-semibold mb-1">Business Name</h3>
                 <p>{selectedBusiness.businessName}</p>
+              </div>
+              
+              <div className="mb-4">
+                <h3 className="font-semibold mb-1">Location</h3>
+                <div className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-1 text-muted-foreground" />
+                  <p>{selectedBusiness.location}</p>
+                </div>
               </div>
               
               <div className="mb-4">

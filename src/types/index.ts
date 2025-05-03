@@ -1,11 +1,9 @@
 
-export type UserRole = 'user' | 'admin';
-
 export interface User {
   id: string;
   email: string;
   name: string;
-  role: UserRole;
+  role: 'user' | 'admin';
   avatar?: string;
 }
 
@@ -18,6 +16,7 @@ export interface Campaign {
   raised: number;
   category: string;
   image: string;
+  location: string; // Added location field
   creator: {
     id: string;
     name: string;
@@ -35,12 +34,20 @@ export interface BusinessPromotion {
   description: string;
   logo: string;
   website?: string;
+  location: string; // Added location field
   owner: {
     id: string;
     name: string;
   };
   status: 'pending' | 'approved' | 'rejected';
   createdAt: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
 }
 
 export interface Donation {
@@ -51,11 +58,4 @@ export interface Donation {
   createdAt: string;
   displayName: string;
   message?: string;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  icon: string;
 }
