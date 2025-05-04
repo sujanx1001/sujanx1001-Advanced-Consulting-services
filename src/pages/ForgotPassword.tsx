@@ -22,6 +22,9 @@ const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
 });
 
+// API URL
+const API_URL = 'http://localhost:5000/api';
+
 export default function ForgotPassword() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,10 +43,18 @@ export default function ForgotPassword() {
     setResetError(null);
     
     try {
-      // In a real implementation, this would call an API to initiate password reset
-      // For the demo, we'll simulate a successful response
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Call the API to initiate password reset
+      const response = await fetch(`${API_URL}/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: values.email }),
+      });
       
+      const data = await response.json();
+      
+      // Even if user doesn't exist, we still show the success message for security
       setResetSent(true);
       toast({
         title: "Reset link sent",
