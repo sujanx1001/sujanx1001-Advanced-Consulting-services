@@ -1,151 +1,159 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { User } from '@/types';
-import { useToast } from '@/components/ui/use-toast';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
+// Add the auth service
+import { authService } from '@/services/auth.service';
+
+// Define the user type
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+}
+
+// Define the auth context type
 interface AuthContextType {
   user: User | null;
-  isLoading: boolean;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isLoading: true,
-  isAuthenticated: false,
-  login: async () => {},
-  register: async () => {},
-  logout: () => {},
-});
+// Create the auth context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => useContext(AuthContext);
-
-// Mock users for demonstration purposes
-const MOCK_USERS = [
-  {
-    id: '1',
-    email: 'admin@example.com',
-    password: 'admin123',
-    name: 'Admin User',
-    role: 'admin' as const,
-    avatar: '/placeholder.svg',
-  },
-  {
-    id: '2',
-    email: 'user@example.com',
-    password: 'user123',
-    name: 'Regular User',
-    role: 'user' as const,
-    avatar: '/placeholder.svg',
-  },
-];
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Create the auth provider
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Check for existing session on initial load
+  // Check if user is logged in on component mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('socialAwareUser');
-    if (storedUser) {
+    const checkLoggedIn = async () => {
+      setIsLoading(true);
       try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+          // Get user data from the API using the token
+          const userData = await authService.getCurrentUser();
+          setUser(userData);
+          setIsAuthenticated(true);
+        }
       } catch (error) {
-        console.error('Failed to parse stored user:', error);
-        localStorage.removeItem('socialAwareUser');
+        console.error('Auth check failed:', error);
+        // If token is invalid, clear it
+        localStorage.removeItem('token');
+        setUser(null);
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    };
+
+    checkLoggedIn();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  // Login function
+  const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
-    
-    // Mock API call delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    const foundUser = MOCK_USERS.find(u => u.email === email && u.password === password);
-    
-    if (foundUser) {
-      // Strip password before storing
-      const { password: _, ...userWithoutPassword } = foundUser;
-      setUser(userWithoutPassword);
-      localStorage.setItem('socialAwareUser', JSON.stringify(userWithoutPassword));
+    try {
+      const response = await authService.login({ email, password });
+      
+      // Save token to localStorage
+      localStorage.setItem('token', response.token);
+      
+      // Set user state
+      setUser(response.user);
+      setIsAuthenticated(true);
+      
       toast({
-        title: "Login successful",
-        description: `Welcome back, ${foundUser.name}`,
+        title: "Success",
+        description: "You have been logged in successfully",
       });
-    } else {
-      toast({
-        title: "Login failed",
-        description: "Invalid email or password. Please try again.",
-        variant: "destructive",
-      });
-      throw new Error('Invalid credentials');
-    }
-    
-    setIsLoading(false);
-  };
-
-  const register = async (name: string, email: string, password: string) => {
-    setIsLoading(true);
-    
-    // Mock API call delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    if (MOCK_USERS.some(u => u.email === email)) {
-      toast({
-        title: "Registration failed",
-        description: "Email already exists. Please use a different email.",
-        variant: "destructive",
-      });
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    } finally {
       setIsLoading(false);
-      throw new Error('Email already exists');
     }
-    
-    // In a real app, you would make an API call to register the user
-    // For demo purposes, we'll just simulate a successful registration
-    const newUser = {
-      id: `${MOCK_USERS.length + 1}`,
-      email,
-      name,
-      role: 'user' as const,
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('socialAwareUser', JSON.stringify(newUser));
-    toast({
-      title: "Registration successful",
-      description: "Your account has been created successfully.",
-    });
-    
-    setIsLoading(false);
   };
 
-  const logout = () => {
+  // Register function
+  const register = async (name: string, email: string, password: string): Promise<void> => {
+    setIsLoading(true);
+    try {
+      const response = await authService.register({ name, email, password });
+      
+      // Save token to localStorage
+      localStorage.setItem('token', response.token);
+      
+      // Set user state
+      setUser(response.user);
+      setIsAuthenticated(true);
+      
+      toast({
+        title: "Account created",
+        description: "Your account has been created successfully",
+      });
+      
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Logout function
+  const logout = (): void => {
+    // Remove token from localStorage
+    localStorage.removeItem('token');
+    
+    // Reset state
     setUser(null);
-    localStorage.removeItem('socialAwareUser');
+    setIsAuthenticated(false);
+    
     toast({
       title: "Logged out",
-      description: "You have been logged out successfully.",
+      description: "You have been logged out successfully",
     });
+    
+    // Redirect to home page
+    navigate('/');
+  };
+
+  // Provide the auth context value
+  const value: AuthContextType = {
+    user,
+    isAuthenticated,
+    isLoading,
+    login,
+    register,
+    logout,
   };
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      isLoading,
-      isAuthenticated: !!user,
-      login,
-      register,
-      logout
-    }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Create the useAuth hook
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };

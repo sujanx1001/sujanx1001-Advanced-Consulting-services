@@ -17,13 +17,11 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { authService } from '@/services/auth.service';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
 });
-
-// API URL
-const API_URL = 'http://localhost:5000/api';
 
 export default function ForgotPassword() {
   const { toast } = useToast();
@@ -43,16 +41,8 @@ export default function ForgotPassword() {
     setResetError(null);
     
     try {
-      // Call the API to initiate password reset
-      const response = await fetch(`${API_URL}/auth/forgot-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: values.email }),
-      });
-      
-      const data = await response.json();
+      // Call the auth service to initiate password reset
+      await authService.forgotPassword(values.email);
       
       // Even if user doesn't exist, we still show the success message for security
       setResetSent(true);

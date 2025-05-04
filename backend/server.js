@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth.routes');
 const campaignRoutes = require('./routes/campaign.routes');
 const businessRoutes = require('./routes/business.routes');
 const donationRoutes = require('./routes/donation.routes');
+const categoryRoutes = require('./routes/category.routes');
 
 // Middleware
 app.use(cors());
@@ -24,6 +25,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/campaigns', campaignRoutes);
 app.use('/api/businesses', businessRoutes);
 app.use('/api/donations', donationRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // Base route
 app.get('/', (req, res) => {
