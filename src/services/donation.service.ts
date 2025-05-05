@@ -1,5 +1,6 @@
 
 import { API_ENDPOINTS, getAuthHeader } from './api.config';
+import { Donation } from '@/types';
 
 // Types
 interface DonationData {
@@ -11,7 +12,7 @@ interface DonationData {
 
 export const donationService = {
   // Get donations by campaign
-  async getDonationsByCampaign(campaignId: string): Promise<any[]> {
+  async getDonationsByCampaign(campaignId: string): Promise<Donation[]> {
     const response = await fetch(API_ENDPOINTS.DONATIONS.BY_CAMPAIGN(campaignId));
     
     if (!response.ok) {
@@ -22,7 +23,7 @@ export const donationService = {
   },
   
   // Make a donation
-  async makeDonation(donationData: DonationData): Promise<any> {
+  async makeDonation(donationData: DonationData): Promise<Donation> {
     const response = await fetch(API_ENDPOINTS.DONATIONS.BASE, {
       method: 'POST',
       headers: {

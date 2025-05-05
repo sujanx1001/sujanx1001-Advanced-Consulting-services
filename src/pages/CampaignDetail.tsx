@@ -102,10 +102,10 @@ export default function CampaignDetail() {
     }
     
     makeDonation({
-      campaignId: campaign.id,
-      userId: user!.id,
+      campaignId: campaign!.id,
       amount,
-      displayName: user!.name,
+      displayName: user ? user.name : "Anonymous",
+      userId: user ? user.id : undefined,
       message: donationMessage || undefined,
     });
     

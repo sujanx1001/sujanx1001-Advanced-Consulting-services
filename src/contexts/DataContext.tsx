@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { Campaign, BusinessPromotion } from '@/types';
+import { Campaign, BusinessPromotion, Donation } from '@/types';
 
 // Import our services
 import { campaignService } from '@/services/campaign.service';
@@ -15,12 +15,19 @@ interface DataContextType {
   campaigns: Campaign[];
   businessPromotions: BusinessPromotion[];
   categories: Category[];
+  donations: Donation[];
   isLoading: boolean;
   createCampaign: (campaignData: Partial<Campaign>) => Promise<void>;
   createBusinessPromotion: (businessData: Partial<BusinessPromotion>) => Promise<void>;
   updateCampaignStatus: (id: string, status: 'approved' | 'rejected') => Promise<void>;
   updateBusinessStatus: (id: string, status: 'approved' | 'rejected') => Promise<void>;
-  makeDonation: (campaignId: string, amount: number, displayName: string, message?: string) => Promise<void>;
+  makeDonation: (donationData: { campaignId: string, amount: number, displayName: string, userId?: string, message?: string }) => Promise<void>;
+  joinCampaign: (campaignId: string) => Promise<void>;
+  shareCampaign: (campaignId: string, platform?: string) => Promise<void>;
+  approveCampaign: (campaignId: string) => Promise<void>;
+  rejectCampaign: (campaignId: string) => Promise<void>;
+  approveBusinessPromotion: (businessId: string) => Promise<void>;
+  rejectBusinessPromotion: (businessId: string) => Promise<void>;
 }
 
 // Create the context with a default value
@@ -28,12 +35,19 @@ const DataContext = createContext<DataContextType>({
   campaigns: [],
   businessPromotions: [],
   categories: [],
+  donations: [],
   isLoading: false,
   createCampaign: () => Promise.reject('createCampaign must be used within a Provider'),
   createBusinessPromotion: () => Promise.reject('createBusinessPromotion must be used within a Provider'),
   updateCampaignStatus: () => Promise.reject('updateCampaignStatus must be used within a Provider'),
   updateBusinessStatus: () => Promise.reject('updateBusinessStatus must be used within a Provider'),
   makeDonation: () => Promise.reject('makeDonation must be used within a Provider'),
+  joinCampaign: () => Promise.reject('joinCampaign must be used within a Provider'),
+  shareCampaign: () => Promise.reject('shareCampaign must be used within a Provider'),
+  approveCampaign: () => Promise.reject('approveCampaign must be used within a Provider'),
+  rejectCampaign: () => Promise.reject('rejectCampaign must be used within a Provider'),
+  approveBusinessPromotion: () => Promise.reject('approveBusinessPromotion must be used within a Provider'),
+  rejectBusinessPromotion: () => Promise.reject('rejectBusinessPromotion must be used within a Provider'),
 });
 
 // Create a custom hook to use the context
@@ -43,6 +57,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [businessPromotions, setBusinessPromotions] = useState<BusinessPromotion[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [donations, setDonations] = useState<Donation[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
@@ -65,6 +80,15 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       setCampaigns(campaignsData);
       setBusinessPromotions(businessesData);
       setCategories(categoriesData);
+      
+      // We'll fetch donations separately (just for active campaigns)
+      const donationPromises = campaignsData
+        .filter(campaign => campaign.status === 'approved')
+        .map(campaign => donationService.getDonationsByCampaign(campaign.id));
+      
+      const donationsArrays = await Promise.all(donationPromises);
+      const allDonations = donationsArrays.flat();
+      setDonations(allDonations);
       
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -198,22 +222,95 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Make donation function
-  const makeDonation = async (campaignId: string, amount: number, displayName: string, message?: string): Promise<void> => {
+  // Short helper methods for campaign status updates
+  const approveCampaign = async (campaignId: string): Promise<void> => {
+    return updateCampaignStatus(campaignId, 'approved');
+  };
+  
+  const rejectCampaign = async (campaignId: string): Promise<void> => {
+    return updateCampaignStatus(campaignId, 'rejected');
+  };
+  
+  // Short helper methods for business status updates
+  const approveBusinessPromotion = async (businessId: string): Promise<void> => {
+    return updateBusinessStatus(businessId, 'approved');
+  };
+  
+  const rejectBusinessPromotion = async (businessId: string): Promise<void> => {
+    return updateBusinessStatus(businessId, 'rejected');
+  };
+
+  // Join campaign function
+  const joinCampaign = async (campaignId: string): Promise<void> => {
     try {
-      await donationService.makeDonation({
-        campaignId,
-        amount,
-        displayName,
-        message
+      const updatedCampaign = await campaignService.joinCampaign(campaignId);
+      
+      // Update campaign in state
+      setCampaigns(prev => prev.map(campaign => 
+        campaign.id === campaignId ? updatedCampaign : campaign
+      ));
+      
+      toast({
+        title: "Success",
+        description: "You have successfully joined this campaign.",
       });
+      
+    } catch (error) {
+      console.error('Error joining campaign:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to join campaign. Please try again.",
+      });
+      throw error;
+    }
+  };
+
+  // Share campaign function
+  const shareCampaign = async (campaignId: string, platform: string = 'generic'): Promise<void> => {
+    try {
+      const updatedCampaign = await campaignService.shareCampaign(campaignId, platform);
+      
+      // Update campaign in state
+      setCampaigns(prev => prev.map(campaign => 
+        campaign.id === campaignId ? updatedCampaign : campaign
+      ));
+      
+      toast({
+        title: "Shared",
+        description: "Campaign shared successfully.",
+      });
+      
+    } catch (error) {
+      console.error('Error sharing campaign:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to share campaign. Please try again.",
+      });
+      throw error;
+    }
+  };
+
+  // Make donation function
+  const makeDonation = async (donationData: { campaignId: string, amount: number, displayName: string, userId?: string, message?: string }): Promise<void> => {
+    try {
+      const result = await donationService.makeDonation({
+        campaignId: donationData.campaignId,
+        amount: donationData.amount,
+        displayName: donationData.displayName,
+        message: donationData.message
+      });
+      
+      // Update donations state
+      setDonations(prev => [result, ...prev]);
       
       // Update campaign raised amount in state
       setCampaigns(prev => prev.map(campaign => {
-        if (campaign.id === campaignId) {
+        if (campaign.id === donationData.campaignId) {
           return {
             ...campaign,
-            raised: campaign.raised + amount
+            raised: campaign.raised + donationData.amount
           };
         }
         return campaign;
@@ -221,7 +318,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       
       toast({
         title: "Donation successful",
-        description: `Thank you for your donation of $${amount}`,
+        description: `Thank you for your donation of $${donationData.amount}`,
       });
       
     } catch (error) {
@@ -239,12 +336,19 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
     campaigns,
     businessPromotions,
     categories,
+    donations,
     isLoading,
     createCampaign,
     createBusinessPromotion,
     updateCampaignStatus,
     updateBusinessStatus,
     makeDonation,
+    joinCampaign,
+    shareCampaign,
+    approveCampaign,
+    rejectCampaign,
+    approveBusinessPromotion,
+    rejectBusinessPromotion,
   };
 
   return (
