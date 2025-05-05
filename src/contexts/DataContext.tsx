@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -9,6 +10,9 @@ import { businessService } from '@/services/business.service';
 import { categoryService } from '@/services/category.service';
 import { donationService } from '@/services/donation.service';
 import { Category } from '@/services/category.service';
+
+// Import mock data for fallback
+import { mockCampaigns, mockBusinesses, mockCategories, mockDonations } from '@/services/mockData';
 
 // Define the context type
 interface DataContextType {
@@ -70,7 +74,7 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      // Fetch campaigns, businesses, and categories in parallel
+      // Try to fetch campaigns, businesses, and categories in parallel
       const [campaignsData, businessesData, categoriesData] = await Promise.all([
         campaignService.getAllCampaigns(),
         businessService.getAllBusinesses(),
@@ -92,10 +96,15 @@ export const DataProvider = ({ children }: { children: React.ReactNode }) => {
       
     } catch (error) {
       console.error('Error fetching data:', error);
+      // Use mock data as fallback
+      setCampaigns(mockCampaigns);
+      setBusinessPromotions(mockBusinesses);
+      setCategories(mockCategories);
+      setDonations(mockDonations);
+      
       toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load data. Please try again later.",
+        title: "Demo Mode",
+        description: "Using sample data for demonstration",
       });
     } finally {
       setIsLoading(false);

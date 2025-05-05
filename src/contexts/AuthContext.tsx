@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -23,6 +24,24 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
+
+// Mock demo user for development
+const demoUser: User = {
+  id: 'demo123',
+  name: 'Demo User',
+  email: 'demo@example.com',
+  role: 'user',
+  avatar: '/placeholder.svg'
+};
+
+// Admin user for testing
+const adminUser: User = {
+  id: 'admin123',
+  name: 'Admin User',
+  email: 'admin@example.com',
+  role: 'admin',
+  avatar: '/placeholder.svg'
+};
 
 // Create the auth context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -66,6 +85,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
+      // Special handling for demo accounts
+      if ((email === 'admin@example.com' && password === 'admin123') || 
+          (email === 'user@example.com' && password === 'user123')) {
+        
+        const mockUser = email === 'admin@example.com' ? adminUser : demoUser;
+        const mockToken = 'demo-token-' + Date.now();
+        
+        // Mock successful login
+        localStorage.setItem('token', mockToken);
+        setUser(mockUser);
+        setIsAuthenticated(true);
+        
+        toast({
+          title: "Demo Login",
+          description: `Logged in as ${mockUser.role} (demo mode)`,
+        });
+        
+        return;
+      }
+      
+      // Real login attempt
       const response = await authService.login({ email, password });
       
       // Save token to localStorage
@@ -92,20 +132,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (name: string, email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
-      const response = await authService.register({ name, email, password });
-      
-      // Save token to localStorage
-      localStorage.setItem('token', response.token);
-      
-      // Set user state
-      setUser(response.user);
+      // For demo, just simulate registration
+      localStorage.setItem('token', 'demo-registration-token-' + Date.now());
+      setUser({
+        id: 'new-user-' + Date.now(),
+        name,
+        email,
+        role: 'user'
+      });
       setIsAuthenticated(true);
       
       toast({
-        title: "Account created",
-        description: "Your account has been created successfully",
+        title: "Demo Registration",
+        description: "Account created in demo mode",
       });
-      
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
