@@ -63,7 +63,7 @@ export const authService = {
 
   // Get current user
   async getCurrentUser(): Promise<any> {
-    const response = await fetch(API_ENDPOINTS.AUTH.ME, {
+    const response = await fetch(API_ENDPOINTS.AUTH.CURRENT_USER, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

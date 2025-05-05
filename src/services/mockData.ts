@@ -12,14 +12,17 @@ export const mockCampaigns: Campaign[] = [
     image: '/placeholder.svg',
     goal: 10000,
     raised: 6500,
-    daysLeft: 15,
+    category: 'environment',
     location: 'Global',
     status: 'approved',
-    category: 'environment',
-    createdBy: 'user123',
-    supporters: 78,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    participants: 78,
+    shares: 0,
+    creator: {
+      id: 'user123',
+      name: 'John Doe',
+      avatar: '/placeholder.svg'
+    }
   },
   {
     id: '2',
@@ -29,14 +32,17 @@ export const mockCampaigns: Campaign[] = [
     image: '/placeholder.svg',
     goal: 25000,
     raised: 12000,
-    daysLeft: 30,
+    category: 'education',
     location: 'Multiple Countries',
     status: 'approved',
-    category: 'education',
-    createdBy: 'user456',
-    supporters: 145,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    participants: 145,
+    shares: 20,
+    creator: {
+      id: 'user456',
+      name: 'Jane Smith',
+      avatar: '/placeholder.svg'
+    }
   }
 ];
 
@@ -50,9 +56,11 @@ export const mockBusinesses: BusinessPromotion[] = [
     location: 'Portland, OR',
     website: 'https://example.com/eco',
     status: 'approved',
-    createdBy: 'user789',
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    owner: {
+      id: 'user789',
+      name: 'Alex Green'
+    }
   },
   {
     id: '2',
@@ -62,9 +70,11 @@ export const mockBusinesses: BusinessPromotion[] = [
     location: 'Chicago, IL',
     website: 'https://example.com/impact',
     status: 'approved',
-    createdBy: 'user012',
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    owner: {
+      id: 'user012',
+      name: 'Morgan Taylor'
+    }
   }
 ];
 
