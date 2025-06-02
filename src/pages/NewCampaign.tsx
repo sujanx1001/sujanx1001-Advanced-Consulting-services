@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -154,7 +153,7 @@ export default function NewCampaign() {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Sydney, NSW" {...field} />
+                    <Input placeholder="e.g. Melbourne, VIC" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,7 +5,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Import routes
 const authRoutes = require('./routes/auth.routes');
@@ -29,7 +28,7 @@ app.use('/api/categories', categoryRoutes);
 
 // Base route
 app.get('/', (req, res) => {
-  res.send('Social Aware Connect API is running');
+  res.send('Advanced Consulting Services (ACS) API is running');
 });
 
 // Connect to MongoDB

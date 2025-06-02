@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,9 +10,9 @@ export default function About() {
   return (
     <div className="page-container">
       <div className="mb-12 max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4">About Social Aware Connect</h1>
+        <h1 className="text-4xl font-bold mb-4">About Advanced Consulting Services (ACS)</h1>
         <p className="text-xl text-muted-foreground">
-          Empowering communities through awareness, action, and local business support.
+          Empowering businesses through expert consulting, innovation, and strategic support.
         </p>
       </div>
       
@@ -21,9 +20,9 @@ export default function About() {
         <div>
           <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
           <p className="mb-4 text-muted-foreground">
-            Social Aware Connect was founded with a simple but powerful mission: 
-            to bridge the gap between social causes that need attention and people 
-            who want to make a difference.
+            Advanced Consulting Services (ACS) was founded with a clear mission: 
+            to bridge the gap between businesses and their full potential through 
+            expert consulting and strategic guidance.
           </p>
           <p className="mb-4 text-muted-foreground">
             We believe that awareness is the first step toward meaningful social change. 
@@ -103,7 +102,7 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
             <Avatar className="w-32 h-32 mx-auto mb-4">
-              <AvatarImage src="/placeholder.svg" alt="Netra" />
+              <AvatarImage src="/netra.jpg.jpg" alt="Netra" />
               <AvatarFallback className="text-2xl">N</AvatarFallback>
             </Avatar>
             <h3 className="text-xl font-semibold">Netra</h3>
@@ -111,7 +110,7 @@ export default function About() {
           </div>
           <div className="text-center">
             <Avatar className="w-32 h-32 mx-auto mb-4">
-              <AvatarImage src="/placeholder.svg" alt="Sujan" />
+              <AvatarImage src="/sujan.jpg.jpg" alt="Sujan" />
               <AvatarFallback className="text-2xl">S</AvatarFallback>
             </Avatar>
             <h3 className="text-xl font-semibold">Sujan</h3>
@@ -119,7 +118,7 @@ export default function About() {
           </div>
           <div className="text-center">
             <Avatar className="w-32 h-32 mx-auto mb-4">
-              <AvatarImage src="/placeholder.svg" alt="Nabin" />
+              <AvatarImage src="/nabin.jpg.jpg" alt="Nabin" />
               <AvatarFallback className="text-2xl">N</AvatarFallback>
             </Avatar>
             <h3 className="text-xl font-semibold">Nabin</h3>

@@ -1,4 +1,3 @@
-
 // API configuration
 
 // Base API URL - use relative URL for production compatibility
@@ -7,7 +6,7 @@ const API_BASE_URL = '/api';
 // Authentication header helper
 export const getAuthHeader = () => {
   const token = localStorage.getItem('token');
-  return token ? { 'Authorization': `Bearer ${token}` } : {};
+  return token ? { 'x-auth-token': token } : {};
 };
 
 // API endpoints

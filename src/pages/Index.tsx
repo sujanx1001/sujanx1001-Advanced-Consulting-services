@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -31,30 +30,32 @@ export default function Index() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-500/30 to-teal-600/30 z-0"></div>
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-700/40 to-green-800/40"></div>
+        </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Make a Difference Today</h1>
-            <p className="text-xl md:text-2xl mb-8">
-              Join our community dedicated to raising awareness for important social causes
-              and supporting local businesses that make a positive impact.
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">Transform Your Business Today</h1>
+            <p className="text-xl md:text-2xl mb-8 text-white drop-shadow-lg">
+              Expert consulting services to help your business thrive through innovation, 
+              strategy, and sustainable growth solutions.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
                 size="lg" 
-                onClick={() => navigate('/campaigns')}
+                onClick={() => navigate('/services')}
                 className="bg-cause hover:bg-cause-dark text-lg"
               >
-                Explore Campaigns
+                Our Services
               </Button>
               {!isAuthenticated && (
                 <Button
                   size="lg"
                   variant="outline"
                   onClick={() => navigate('/register')}
-                  className="border-cause text-cause hover:bg-cause hover:text-white text-lg"
+                  className="border-white text-white hover:bg-white hover:text-cause text-lg"
                 >
-                  Join Now
+                  Get Started
                 </Button>
               )}
             </div>
@@ -110,17 +111,17 @@ export default function Index() {
       {/* How It Works Section */}
       <section className="py-16 bg-muted">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">How It Works</h2>
+          <h2 className="text-3xl font-bold mb-12 text-center">How We Help You Succeed</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-background rounded-lg p-6 text-center shadow-md">
               <div className="w-16 h-16 bg-cause rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
                 1
               </div>
-              <h3 className="text-xl font-semibold mb-3">Create a Campaign</h3>
+              <h3 className="text-xl font-semibold mb-3">Analyze & Plan</h3>
               <p className="text-muted-foreground">
-                Register and create a campaign for the social cause you are passionate about.
-                Provide details, set goals, and upload images.
+                We perform in-depth analysis of your business and develop 
+                strategic plans tailored to your goals.
               </p>
             </div>
             
@@ -128,10 +129,10 @@ export default function Index() {
               <div className="w-16 h-16 bg-cause rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
                 2
               </div>
-              <h3 className="text-xl font-semibold mb-3">Get Approved</h3>
+              <h3 className="text-xl font-semibold mb-3">Implement Solutions</h3>
               <p className="text-muted-foreground">
-                Our admin team reviews your campaign to ensure it meets our community guidelines
-                and aligns with our mission.
+                Our expert team works with you to implement effective solutions
+                and best practices for sustainable growth.
               </p>
             </div>
             
@@ -139,10 +140,10 @@ export default function Index() {
               <div className="w-16 h-16 bg-cause rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
                 3
               </div>
-              <h3 className="text-xl font-semibold mb-3">Raise Awareness</h3>
+              <h3 className="text-xl font-semibold mb-3">Monitor & Optimize</h3>
               <p className="text-muted-foreground">
-                Once approved, share your campaign, gather participants, and accept donations
-                to make your vision a reality.
+                We continuously monitor progress, measure results, and optimize
+                strategies to ensure long-term success.
               </p>
             </div>
           </div>
@@ -189,6 +190,19 @@ export default function Index() {
               className="bg-cause hover:bg-cause-dark"
             >
               {isAuthenticated ? 'Promote Your Business' : 'Sign in to Promote Your Business'}
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Success Stories Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold">Success Stories</h2>
+            <Button variant="ghost" className="group" onClick={() => navigate('/case-studies')}>
+              View All 
+              <ArrowRight className="ml-1 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>

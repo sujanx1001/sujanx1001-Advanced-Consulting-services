@@ -1,8 +1,7 @@
-
 {
-  "name": "social-aware-connect-api",
+  "name": "advanced-consulting-services-api",
   "version": "1.0.0",
-  "description": "Backend API for the Social Aware Connect platform",
+  "description": "Backend API for the Advanced Consulting Services (ACS) platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

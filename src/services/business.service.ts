@@ -1,4 +1,3 @@
-
 import { API_ENDPOINTS, getAuthHeader } from './api.config';
 import { BusinessPromotion } from '@/types';
 
@@ -20,7 +19,8 @@ export const businessService = {
       throw new Error('Failed to fetch businesses');
     }
     
-    return await response.json();
+    const data = await response.json();
+    return data.map((item: any) => ({ ...item, id: item._id || item.id }));
   },
   
   // Get business by ID
@@ -31,7 +31,8 @@ export const businessService = {
       throw new Error('Failed to fetch business');
     }
     
-    return await response.json();
+    const item = await response.json();
+    return { ...item, id: item._id || item.id };
   },
   
   // Create a new business
@@ -50,7 +51,8 @@ export const businessService = {
       throw new Error(error.message || 'Failed to create business');
     }
     
-    return await response.json();
+    const item = await response.json();
+    return { ...item, id: item._id || item.id };
   },
   
   // Update business status (admin only)

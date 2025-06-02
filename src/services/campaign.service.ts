@@ -1,4 +1,3 @@
-
 import { API_ENDPOINTS, getAuthHeader } from './api.config';
 import { Campaign } from '@/types';
 
@@ -22,7 +21,8 @@ export const campaignService = {
       throw new Error('Failed to fetch campaigns');
     }
     
-    return await response.json();
+    const data = await response.json();
+    return data.map((item: any) => ({ ...item, id: item._id || item.id }));
   },
   
   // Get campaign by ID
@@ -33,7 +33,8 @@ export const campaignService = {
       throw new Error('Failed to fetch campaign');
     }
     
-    return await response.json();
+    const item = await response.json();
+    return { ...item, id: item._id || item.id };
   },
   
   // Create a new campaign
@@ -52,7 +53,8 @@ export const campaignService = {
       throw new Error(error.message || 'Failed to create campaign');
     }
     
-    return await response.json();
+    const item = await response.json();
+    return { ...item, id: item._id || item.id };
   },
   
   // Update campaign status (admin only)

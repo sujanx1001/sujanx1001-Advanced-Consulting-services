@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
@@ -11,10 +10,8 @@ export default function Footer() {
           {/* About Section */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-cause rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">SC</span>
-              </div>
-              <h3 className="text-xl font-semibold">SocialAwareConnect</h3>
+              <img src="/logo.svg" alt="Logo" className="w-10 h-10" />
+              <h3 className="text-xl font-semibold">ACS</h3>
             </div>
             <p className="text-muted-foreground mb-6">
               Connecting people with causes that matter, empowering change, and supporting 
@@ -110,18 +107,18 @@ export default function Footer() {
             <address className="not-italic text-muted-foreground space-y-4">
               <p className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 text-cause mt-0.5" />
-                <span>123 Community Lane<br/>Sydney, NSW 2000</span>
+                <span>456 Collins Street<br/>Melbourne, VIC 3000</span>
               </p>
               <p className="flex items-center">
                 <Mail className="w-5 h-5 mr-3 text-cause" />
-                <a href="mailto:contact@socialawareconnect.com" className="hover:text-cause">
-                  contact@socialawareconnect.com
-                </a>
+                <span className="hover:text-cause">
+                  Advancedconsulting service
+                </span>
               </p>
               <p className="flex items-center">
                 <Phone className="w-5 h-5 mr-3 text-cause" />
-                <a href="tel:+61-2-1234-5678" className="hover:text-cause">
-                  (02) 1234 5678
+                <a href="tel:+61-3-9876-5432" className="hover:text-cause">
+                  (03) 9876 5432
                 </a>
               </p>
             </address>
@@ -134,7 +131,7 @@ export default function Footer() {
         {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center text-muted-foreground text-sm">
           <div className="mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} SocialAwareConnect. All rights reserved.
+            &copy; {new Date().getFullYear()} Advanced Consulting Services (ACS). All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             <Link to="/privacy" className="hover:text-cause transition-colors">
@@ -148,7 +145,7 @@ export default function Footer() {
             </Link>
           </div>
           <div className="mt-4 md:mt-0 flex items-center">
-            Made with <Heart className="h-4 w-4 mx-1 text-accent fill-accent" /> for social change
+            Made with Love for change
           </div>
         </div>
       </div>

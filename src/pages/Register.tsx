@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
@@ -65,7 +64,7 @@ export default function Register() {
           Create your account
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Join Social Aware Connect to start making a difference
+          Join Advanced Consulting Services (ACS) to start your journey
         </p>
       </div>
 

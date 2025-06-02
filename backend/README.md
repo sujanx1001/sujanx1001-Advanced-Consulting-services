@@ -1,7 +1,6 @@
+# Advanced Consulting Services (ACS) API
 
-# Social Aware Connect API
-
-Backend API for the Social Aware Connect platform.
+Backend API for the Advanced Consulting Services (ACS) platform.
 
 ## Getting Started
 
@@ -21,7 +20,7 @@ Backend API for the Social Aware Connect platform.
 4. Create a `.env` file in the root directory with the following variables:
    ```
    PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/social-aware-connect
+   MONGODB_URI=mongodb://localhost:27017/acs-platform
    JWT_SECRET=your_jwt_secret_key_change_in_production
    JWT_EXPIRATION=7d
    ```

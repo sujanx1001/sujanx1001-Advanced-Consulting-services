@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -42,10 +41,8 @@ export default function Navbar() {
       <div className="container flex h-16 items-center justify-between py-4">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <div className="hidden md:flex w-8 h-8 bg-cause rounded-full items-center justify-center">
-            <span className="text-white font-bold">SC</span>
-          </div>
-          <span className="font-bold text-xl text-cause-dark">SocialAwareConnect</span>
+          <img src="/logo.svg" alt="ACS Logo" className="hidden md:flex w-8 h-8" />
+          <span className="font-bold text-xl text-cause-dark">ACS</span>
         </Link>
 
         {/* Center Nav - Desktop Only */}
@@ -137,7 +134,7 @@ export default function Navbar() {
             </SheetTrigger>
             <SheetContent side="right">
               <SheetHeader>
-                <SheetTitle>SocialAwareConnect</SheetTitle>
+                <SheetTitle>Advanced Consulting Services (ACS)</SheetTitle>
               </SheetHeader>
               <div className="grid gap-4 py-6">
                 <Link to="/" className="text-lg font-semibold">

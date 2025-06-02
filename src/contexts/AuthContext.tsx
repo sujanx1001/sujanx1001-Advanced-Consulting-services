@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -85,41 +84,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
-      // Special handling for demo accounts
-      if ((email === 'admin@example.com' && password === 'admin123') || 
-          (email === 'user@example.com' && password === 'user123')) {
-        
-        const mockUser = email === 'admin@example.com' ? adminUser : demoUser;
-        const mockToken = 'demo-token-' + Date.now();
-        
-        // Mock successful login
-        localStorage.setItem('token', mockToken);
-        setUser(mockUser);
-        setIsAuthenticated(true);
-        
-        toast({
-          title: "Demo Login",
-          description: `Logged in as ${mockUser.role} (demo mode)`,
-        });
-        
-        return;
-      }
-      
-      // Real login attempt
+      // Real login attempt (demo accounts removed)
       const response = await authService.login({ email, password });
-      
       // Save token to localStorage
       localStorage.setItem('token', response.token);
-      
       // Set user state
       setUser(response.user);
       setIsAuthenticated(true);
-      
       toast({
         title: "Success",
         description: "You have been logged in successfully",
       });
-      
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -132,22 +107,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (name: string, email: string, password: string): Promise<void> => {
     setIsLoading(true);
     try {
-      // For demo, just simulate registration
-      localStorage.setItem('token', 'demo-registration-token-' + Date.now());
-      setUser({
-        id: 'new-user-' + Date.now(),
-        name,
-        email,
-        role: 'user'
-      });
+      // Call the backend API to register the user
+      const response = await authService.register({ name, email, password });
+      // Save token to localStorage
+      localStorage.setItem('token', response.token);
+      // Set user state
+      setUser(response.user);
       setIsAuthenticated(true);
-      
       toast({
-        title: "Demo Registration",
-        description: "Account created in demo mode",
+        title: "Success",
+        description: "Your account has been created successfully.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error:', error);
+      // Show error message from backend if available
+      toast({
+        title: "Registration failed",
+        description: error.message || 'Registration failed. Please try again.',
+        variant: 'destructive',
+      });
       throw error;
     } finally {
       setIsLoading(false);

@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -64,22 +63,22 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				// Custom colors for our social awareness platform
-				teal: {
-					50: '#e6fffa',
-					100: '#b2f5ea',
-					200: '#81e6d9',
-					300: '#4fd1c5',
-					400: '#38b2ac',
-					500: '#319795',
-					600: '#2c7a7b',
-					700: '#285e61',
-					800: '#234e52',
-					900: '#1d4044',
+				royal: {
+					50: '#eff6ff',
+					100: '#dbeafe',
+					200: '#bfdbfe',
+					300: '#93c5fd',
+					400: '#60a5fa',
+					500: '#3b82f6',
+					600: '#2563eb',
+					700: '#1d4ed8',
+					800: '#1e40af',
+					900: '#1e3a8a',
 				},
 				cause: {
-					light: '#4fd1c5',
-					DEFAULT: '#319795',
-					dark: '#285e61',
+					light: '#60a5fa',
+					DEFAULT: '#2563eb',
+					dark: '#1d4ed8',
 				}
 			},
 			borderRadius: {
