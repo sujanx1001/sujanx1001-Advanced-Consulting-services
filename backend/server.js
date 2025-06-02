@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -19,17 +20,28 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/campaigns', campaignRoutes);
 app.use('/api/businesses', businessRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/categories', categoryRoutes);
 
-// Base route
-app.get('/', (req, res) => {
-  res.send('Advanced Consulting Services (ACS) API is running');
-});
+// Serve static files from the React app build directory
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the dist directory
+  app.use(express.static(path.join(__dirname, '../dist')));
+  
+  // Handle React routing, return all requests to React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+} else {
+  // Development route
+  app.get('/', (req, res) => {
+    res.send('Advanced Consulting Services (ACS) API is running');
+  });
+}
 
 // Connect to MongoDB
 const connectDB = async () => {
