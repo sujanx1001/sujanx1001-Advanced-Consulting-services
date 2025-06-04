@@ -195,19 +195,6 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Featured Success Stories Section */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">Success Stories</h2>
-            <Button variant="ghost" className="group" onClick={() => navigate('/case-studies')}>
-              View All 
-              <ArrowRight className="ml-1 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
       {/* Call to Action */}
       <section className="py-16 bg-cause text-white">
         <div className="container mx-auto px-4 text-center">
