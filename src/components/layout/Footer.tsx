@@ -134,13 +134,13 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Advanced Consulting Services (ACS). All rights reserved.
           </div>
           <div className="flex flex-wrap justify-center gap-6">
-            <Link to="/privacy" className="hover:text-cause transition-colors">
+            <Link to="/privacy-policy" className="hover:text-cause transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-cause transition-colors">
+            <Link to="/terms-of-service" className="hover:text-cause transition-colors">
               Terms of Service
             </Link>
-            <Link to="/cookies" className="hover:text-cause transition-colors">
+            <Link to="/cookie-policy" className="hover:text-cause transition-colors">
               Cookie Policy
             </Link>
           </div>
